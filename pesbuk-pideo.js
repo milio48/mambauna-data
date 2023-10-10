@@ -1,4 +1,7 @@
-   // declaration variable
+  // config
+  var scrollValue = 20; // change to controll speed scroll
+  
+  // declaration variable
    var laporan = [];
    var listening = false;
    var otoScroll = false;
@@ -258,11 +261,12 @@ function warnai(){
     try {
         for(var i=0; i<laporan.length; i++){
             var element = document.querySelector(`a[href*="/videos/${laporan[i][1]}"]`).parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-            if (element) {
+            // if (element) {
                 element.style.backgroundColor = '#00808052';
-            }
+            // }
         }
     } catch (error) {
+        // console.log(error);
     }
 }
 
@@ -299,7 +303,7 @@ function startx(){
                             <option value="11">November</option>
                             <option value="12">Desember</option>
                         </select>
-                        <button style="background-color: #4CAF50;color: white;border: none;padding: 10px 20px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border-radius: 8px;" onclick="listen();startScroll();">Listen</button>
+                        <button style="background-color: #4CAF50;color: white;border: none;padding: 10px 20px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border-radius: 8px;" fz="btn-listen">Listen</button>
                     </div>
                     <div fz="konten-table">
                         <table border="1" fz="table">
@@ -318,19 +322,19 @@ function startx(){
                     </div>
                 </div>
                 <div fz="tombol"> 
-                        <button style="background-color: #4c94af;" onclick="getHashtag();">GET HASHTAG</button>
-                        <button style="background-color: #4CAF50;" onclick="startScroll();">Start Scroll</button>
-                        <button style="background-color: #af4c72;" onclick="stopScroll()">Stop Scroll</button>
-                        <button style="background-color: #afa84c;" onclick="dnldjson()">Download JSON</button>
+                        <button style="background-color: #4c94af;" fz="btn-htg">GET HASHTAG</button>
+                        <button style="background-color: #4CAF50;" fz="btn-start">Start Scroll</button>
+                        <button style="background-color: #af4c72;" fz="btn-stop">Stop Scroll</button>
+                        <button style="background-color: #afa84c;" fz="btn-dnlnd">Download JSON</button>
                     </div>
                     <div fz="hashtag">
                         <h3 style=" margin-top: 6px; ">Unique Hashtag as a Category</h3>
-                        <textarea fz="txt_hashtag" onchange="sessionStorage.setItem('fz_hashtag', this.value)" spellcheck="false" rows="2" cols="70" style=" width: 100%; resize: none; color: #2f2faa; ">#myVid #reupload</textarea>
+                        <textarea fz="txt_hashtag" spellcheck="false" rows="2" cols="70" style=" width: 100%; resize: none; color: #2f2faa; ">#myVid #reupload</textarea>
                     </div>
             </div>
         </div>
     </div>
-    <button fz="btn48" onclick="bukatutup()">🤖 FACEBOOK VIDEO SCRAPING DATA 🤖</button>
+    <button fz="btn48">🤖 FACEBOOK VIDEO SCRAPING DATA 🤖</button>
     `);
     document.querySelectorAll('[fz="txt_hashtag"]')[0].value = sessionStorage.getItem("fz_hashtag") || "#myvideo #reupload";
     // benerin responsive gan <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -376,9 +380,9 @@ function startx(){
                             position: fixed;top: 20%;right: 20px;background-color: #007bff;color: #fff;padding: 10px 20px;border: none;border-radius: 5px;cursor: pointer;z-index: 3;box-shadow: 2px 3px 20px 1px rgb(0 0 0);;
                         }
 
-                          [fz="btn48"]:hover {
-                            background-color: #0056b3;
-                          }
+                        [fz="btn48"]:hover {
+                        background-color: #0056b3;
+                        }
     `;
     
 
@@ -521,7 +525,7 @@ setTimeout(() => {
 }, 3000);
 
 
-function startScroll(scrollSpeed = 20, interval = 20) {
+function startScroll(scrollSpeed = 10, interval = 20) {
     if(otoScroll == false){
         scrollInterval = setInterval(() => {
         window.scrollBy(0, scrollSpeed);
@@ -583,7 +587,42 @@ function downloadJson(data, filename, type) {
   function bukatutup() {
     if(document.querySelector('[fz="popup"]').style.position == 'fixed'){
         document.querySelector('[fz="popup"]').style.position = 'unset';
+        console.log("hide ui");
     }else{
         document.querySelector('[fz="popup"]').style.position = 'fixed';
+        console.log("show ui");
     }
   }
+
+
+
+setTimeout(() => {
+    // event
+  document.querySelector('[fz="btn48"]').addEventListener('click', function() {
+    bukatutup(); 
+  });
+
+  document.querySelector('[fz="btn-listen"]').addEventListener('click', function() {
+    listen();startScroll(scrollValue);
+  });
+
+  document.querySelector('[fz="btn-htg"]').addEventListener('click', function() {
+    getHashtag();
+  });
+
+  document.querySelector('[fz="btn-start"]').addEventListener('click', function() {
+    startScroll(scrollValue);
+  });
+
+  document.querySelector('[fz="btn-stop"]').addEventListener('click', function() {
+    stopScroll();
+  });
+
+  document.querySelector('[fz="btn-dnlnd"]').addEventListener('click', function() {
+    dnldjson();
+  });
+
+  document.querySelector('[fz="txt_hashtag"]').addEventListener('change', function() {
+    sessionStorage.setItem('fz_hashtag', this.value)
+  });
+}, 5000);
