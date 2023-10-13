@@ -1,5 +1,8 @@
   // config
-  var scrollValue = 20; // change to controll speed scroll
+  var scrollValue = 50; // change to controll speed scroll
+
+
+
   
   // declaration variable
    var laporan = [];
@@ -25,7 +28,7 @@
 
                // Intercept respons dan simpan dalam kumpulan
                var xhrResponsesCatch = [];
-               var xhrResponsesCatch_graphql = [];
+                //    var xhrResponsesCatch_graphql = [];
 
                // Timpa fungsi send untuk merekam respons
                var originalXhrSend = XMLHttpRequest.prototype.send;
@@ -45,7 +48,7 @@
                        };
 
                        if(xhr._url == "/api/graphql/"){
-                           xhrResponsesCatch_graphql.push(xhr);
+                        //    xhrResponsesCatch_graphql.push(xhr);
                            // analisaAsli(xhr.responseText);
                            // analisaTambahan(xhr.responseText);
                            analisaDescription(xhr.responseText);
@@ -55,24 +58,6 @@
                    xhr._startTime = performance.now();
                    return originalXhrSend.apply(this, arguments);
                };
-
-
-function getVideoDom() {
-var fz_class = document.querySelectorAll('a[href*="/videos/"]')[0].parentElement.parentElement.classList;
-var kelas = document.getElementsByClassName(fz_class.value);
-var kelasku = [];
-
-for (var i = 0; i < kelas.length; i++) {
-   var element = kelas[i];
-   if (element.classList.length === 1 && element.classList.contains("x12qybmz")) {
-       kelasku.push(element);
-   }
-}
-
-return kelasku;
-}
-
-
 
 function cariId(arrayOfArrays, valueToFind) {
 for (var i = 0; i < arrayOfArrays.length; i++) {
@@ -142,7 +127,7 @@ try{
        var cari = cariString(lines, 'wwwURL');
     //    console.log(cari);
 
-       var cari2 = cariString(lines, '||');
+    //    var cari2 = cariString(lines, '||');
     //    console.log(cari2);
 
 
@@ -178,7 +163,8 @@ try {
        var dateVid = responseVid.data.node.timeline_list_feed_units.edges[0].node.comet_sections.content.story.comet_sections.context_layout.story.comet_sections.metadata[0].story.creation_time;
        var durasi = responseVid.data.node.timeline_list_feed_units.edges[0].node.comet_sections.content.story.attachments[0].styles.attachment.media.playable_duration_in_ms;
     //    console.log(desc);
-       console.log(idvid);
+    //    console.log(idvid);
+       console.log(urlid);
 
     //    console.log(formatWaktu(dateVid));
     //    console.log(formatMenit(durasi));
@@ -189,7 +175,7 @@ try {
 
        if(formatWaktu(dateVid).includes(listening) && formatMenit(durasi) !== "-"){
             //console.log(">>>>>>>>>>>>>>>>>>>> new proses asli");
-            laporan.push([formatWaktu(dateVid), idvid, formatMenit(durasi), desc]); // push
+            laporan.push([formatWaktu(dateVid), idvid, formatMenit(durasi), desc, urlid]); // push
             setTimeout(() => {
                 warnai();
                 exportToTable()
@@ -212,7 +198,8 @@ try {
        var dateVid = responseVid.data.node.comet_sections.content.story.comet_sections.context_layout.story.comet_sections.metadata[0].story.creation_time;
        var durasi = responseVid.data.node.comet_sections.content.story.attachments[0].styles.attachment.media.playable_duration_in_ms;
     //    console.log(desc);
-       console.log(idvid);
+    //    console.log(idvid);
+       console.log(urlid);
 
     //    console.log(formatWaktu(dateVid));
     //    console.log(formatMenit(durasi));
@@ -223,7 +210,7 @@ try {
 
     if(formatWaktu(dateVid).includes(listening) && formatMenit(durasi) !== "-"){
             //console.log(">>>>>>>>>>>>>>>>>>>> new proses asli");
-            laporan.push([formatWaktu(dateVid), idvid, formatMenit(durasi), desc]); // push
+            laporan.push([formatWaktu(dateVid), idvid, formatMenit(durasi), desc, urlid]); // push
             setTimeout(() => {
                 warnai();
                 exportToTable()
@@ -279,8 +266,8 @@ function startx(){
         <div fz="bungkus">
             <div fz="kotak">
                 <div fz="konten">
-                    <h1 style="font-size: 2rem;text-align: center;">FACEBOOK VIDEO SCRAPING DATA</h1>
-                    <p style=" text-align: center; margin: 0; ">@milio48 <br> v - [10/10/2023]</p>
+                    <h1 style="font-size: 2rem;text-align: center;">FACEBOOK LIVE SCRAPING DATA</h1>
+                    <p style=" text-align: center; margin: 0; ">@milio48 <br> v - [13/10/2023]</p>
                     <div fz="target-listen">
                         <select id="tahun" style="font-size: large;">
                             <option value="2023">2023</option>
@@ -316,6 +303,7 @@ function startx(){
                                     <th>Durasi</th>
                                     <th>Hashtag</th>
                                     <th>Description</th>
+                                    <th>Link</th>
                                 </tr>
                             </tbody>
                         </table>
@@ -326,6 +314,7 @@ function startx(){
                         <button style="background-color: #4CAF50;" fz="btn-start">Start Scroll</button>
                         <button style="background-color: #af4c72;" fz="btn-stop">Stop Scroll</button>
                         <button style="background-color: #afa84c;" fz="btn-dnlnd">Download JSON</button>
+                        <button style="background-color: #86867a;" fz="btn-reset">Reset Table</button>
                     </div>
                     <div fz="hashtag">
                         <h3 style=" margin-top: 6px; ">Unique Hashtag as a Category</h3>
@@ -334,7 +323,7 @@ function startx(){
             </div>
         </div>
     </div>
-    <button fz="btn48">🤖 FACEBOOK VIDEO SCRAPING DATA 🤖</button>
+    <button fz="btn48">🤖 FACEBOOK LIVE SCRAPING DATA 🤖</button>
     `);
     document.querySelectorAll('[fz="txt_hashtag"]')[0].value = sessionStorage.getItem("fz_hashtag") || "#myvideo #reupload";
     // benerin responsive gan <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -403,20 +392,17 @@ function startx(){
 
 function tulisData(w){
     var fzTbody = document.querySelector(`[fz="tbody"]`);
-
-    // get base play
-    var play_base = document.querySelector(`a[href*="/videos/"]`).href;
-    var clean_play_base = play_base.split("/videos/")[0];
                                                                                                                                                                                                                                                                                                                                                     
     var tr = `
                 <tr>
-                    <td onclick="window.open('${clean_play_base}/videos/${w[1]}', '_blank');" style="color:blue;text-align:center;cursor:pointer;">Play</td>
+                    <td style="text-align:center;"><a href="${w[4]}" style="color:blue;cursor:pointer;" target="_blank">Play</a></td>
                     <td>${document.querySelectorAll(`[fz="tbody"] tr`).length}</td>
                     <td>${w[0]}</td>
                     <td>${w[1]}</td>
                     <td>${w[2]}</td>
                     <td>-</td>
                     <td>${newline(w[3])}</td> 
+                    <td>${w[4]}</td>
                 </tr>`;
     fzTbody.insertAdjacentHTML('beforeend', tr);
   }
@@ -452,10 +438,12 @@ function tulisData(w){
 
 
 function listen(){
+    document.documentElement.scrollTop = 0;
+    startScroll(scrollValue);
     
     var bulan = document.querySelector(`#bulan`).value;
     var tahun = document.querySelector(`#tahun`).value;
-
+    
     if(tahun == '2023'){var thnw = 1}
     if(tahun == '2022'){var thnw = 2}
     if(tahun == '2021'){var thnw = 3}
@@ -480,39 +468,39 @@ function listen(){
     
     setTimeout(() => {
         document.querySelectorAll('[aria-label="Filter"]')[0].click();
-        console.log('klik filter');
+        console.log("%cklik filter", "color:blue");
     }, 1000);
 
 
     setTimeout(() => {
         document.querySelectorAll('[aria-haspopup="listbox"]')[0].click();
-        console.log('klik tahun');
-    }, 3000);
+        console.log("%cklik tahun", "color:blue");
+    }, 2000);
 
     setTimeout(() => {
         var lastxx = document.querySelectorAll('[aria-selected="true"]').length-1;
         document.querySelectorAll('[aria-selected="true"]')[lastxx].parentElement.querySelectorAll('[aria-selected]')[thnw].click();
-        console.log('pilih tahun');
-    }, 4000);
+        console.log("%cpilih tahun", "color:blue");
+    }, 3000);
 
 
 
     setTimeout(() => {
         document.querySelectorAll('[aria-haspopup="listbox"]')[1].click();
-        console.log('klik bulan');
-    }, 6000);
+        console.log("%cklik bulan", "color:blue");
+    }, 4000);
 
     setTimeout(() => {
         var lastxx = document.querySelectorAll('[aria-selected="true"]').length-1;
         document.querySelectorAll('[aria-selected="true"]')[lastxx].parentElement.querySelectorAll('[aria-selected]')[blnw].click(); // maret
-        console.log('pilih bulan');
-    }, 7000);
+        console.log("%cpilih bulan", "color:blue");
+    }, 5000);
 
 
     setTimeout(() => {
         document.querySelectorAll('[aria-label="Selesai"]')[1].click();
-        console.log('kirim filter');
-    }, 9000);
+        console.log("%ckirim filter","color: blue; font-size: 20px");
+    }, 6000);
 
     setTimeout(() => {
         // alert('listenening on. please scroll.');
@@ -531,14 +519,14 @@ function startScroll(scrollSpeed = 10, interval = 20) {
         window.scrollBy(0, scrollSpeed);
         }, interval);
         otoScroll = true;
-        console.log("start scroll");
+        console.log("%cStart Scroll", "color:green");
     }
   }
 
   function stopScroll() {
     if(otoScroll == true){
         clearInterval(scrollInterval);
-        console.log("stop scroll");
+        console.log("%cStop Scroll", "color:red");
         otoScroll = false;
     }
   }
@@ -563,7 +551,8 @@ function dnldjson(){
     var jsonOutput = JSON.stringify(laporan);
     var skrg = formatDateToCustomString(new Date());
 
-    downloadJson(jsonOutput, `output_${skrg}.json`, 'application/json');
+    downloadJson(jsonOutput, `output_(${listening})_${skrg}.json`, 'application/json');
+    console.log("%cDownload Json","color: orange; font-size: 20px");
   }
   
 
@@ -587,10 +576,18 @@ function downloadJson(data, filename, type) {
   function bukatutup() {
     if(document.querySelector('[fz="popup"]').style.position == 'fixed'){
         document.querySelector('[fz="popup"]').style.position = 'unset';
-        console.log("hide ui");
+        console.log("%chide ui", "color:aqua");
     }else{
         document.querySelector('[fz="popup"]').style.position = 'fixed';
-        console.log("show ui");
+        console.log("%cshow ui", "color:aqua");
+    }
+  }
+
+  function resetTable(){
+    if (confirm("Reset Table?") == true) {
+        document.querySelector('[fz="tbody"]').innerHTML = `<tr> <th>Play</th> <th>No</th> <th>Tanggal</th> <th>Video ID</th> <th>Durasi</th> <th>Hashtag</th> <th>Description</th> <th>Link</th></tr>`;
+        laporan = [];
+        console.log("%cReset Table","color: orange; font-size: 20px");
     }
   }
 
@@ -603,7 +600,7 @@ setTimeout(() => {
   });
 
   document.querySelector('[fz="btn-listen"]').addEventListener('click', function() {
-    listen();startScroll(scrollValue);
+    listen();
   });
 
   document.querySelector('[fz="btn-htg"]').addEventListener('click', function() {
@@ -620,6 +617,10 @@ setTimeout(() => {
 
   document.querySelector('[fz="btn-dnlnd"]').addEventListener('click', function() {
     dnldjson();
+  });
+
+  document.querySelector('[fz="btn-reset"]').addEventListener('click', function() {
+    resetTable();
   });
 
   document.querySelector('[fz="txt_hashtag"]').addEventListener('change', function() {
