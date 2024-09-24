@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waveform</title>
+    <style>
+
+        #waveform {
+            border: 1px solid gray;
+            margin: 10px;
+            padding: 5px;
+        }
+        .waveform-loading {
+            background-color: lightgray;
+        }
+
+        #waveform-percent {
+            text-align: center;
+            padding-top: 30px;
+            font-size: 50px;
+        }
+        #waveform-audio-element {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="waveform-loading" id="waveform">
+        <div id="waveform-percent">0%</div>
+    </div>
+    <audio id="waveform-audio-element" controls></audio>
+
+
+
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <script>
+        var urlAudio = 'https://scontent.fsrg6-1.fna.fbcdn.net/v/t42.1790-29/460894416_2236597250055781_6693191648116128016_n.mp4?_nc_cat=100&ccb=1-7&_nc_sid=9a5d50&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbGl2ZV9tZF9mcmFnXzJfYXVkaW8iLCJ2aWRlb19pZCI6NTM5MzI4MDgxOTY2NjQxfQ%3D%3D&_nc_eui2=AeE_yRbzgiUobEVZOl-koaX3nuTVPr4uwTCe5NU-vi7BMC_TET-aMuqTZdo_Cfoao8bnZqyezJHfDJG5PBrPJqny&_nc_ohc=_W2rYXZDwYwQ7kNvgH3cIvV&_nc_ht=scontent.fsrg6-1.fna&_nc_gid=ANzjvESJbs1A2NPMZ5Pu9H1&oh=00_AYC0MYGJdYQqyyFuCZ1Lh3hYgUJWHMXGjvhtX0xHylMG3w&oe=66F8EAB6';
+
+        var audioElement = document.getElementById('waveform-audio-element');
+            audioElement.src = urlAudio;
+            audioElement.play();
+
+        var option = {
+                        container: document.getElementById('waveform'),
+                        waveColor: 'rgb(200, 0, 200)',
+                        progressColor: 'rgb(100, 0, 100)',
+                        backend: 'MediaElement',
+                        media: audioElement,
+                    };
+
+        const wavesurfer = WaveSurfer.create(option);
+              wavesurfer.load(urlAudio);
+
+        wavesurfer.on('ready', () => {
+            wavesurfer.play()
+            document.querySelector('#waveform').classList.remove('waveform-loading');
+            document.querySelector('#waveform-percent').style.display = 'none';
+        })
+
+        wavesurfer.on('click', () => {
+            wavesurfer.play()
+        })
+
+        wavesurfer.on('loading', (percent) => {
+            document.querySelector('#waveform-percent').innerText = percent + '%';
+            // console.log('Loading', percent + '%')
+        })
+    </script>
+</body>
+</html>
